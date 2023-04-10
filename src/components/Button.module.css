@@ -1,0 +1,11 @@
+.btn{
+    width: 100px;
+    background-color: white;
+    color: black;
+    text-transform: capitalize;
+}
+
+.btn:hover{
+    background-color: inherit;
+    color: #535bf2;
+}
