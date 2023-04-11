@@ -47,19 +47,23 @@ class Widget extends Component {
           <FeedbackOptions />
         </Section>
 
-        <Section
-          title={"Statistics"}
-          onClickHandler={this.clickButtonHandler}
-          className={classes.statistics}
-        >
-          <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={total}
-            positivePercentage={feedback}
-          />
-        </Section>
+        {total === 0 ? (
+          <h3>No feedback given</h3>
+        ) : (
+          <Section
+            title={"Statistics"}
+            onClickHandler={this.clickButtonHandler}
+            className={classes.statistics}
+          >
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positivePercentage={feedback}
+            />
+          </Section>
+        )}
       </div>
     );
   }
