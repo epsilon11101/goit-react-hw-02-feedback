@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import Button from "./Button";
-import Label from "./Label";
+
+import Section from "./Section";
+import FeedbackOptions from "./FeedbackOptions";
+import Statistics from "./Statistics";
 
 import classes from "./Widget.module.css";
 
@@ -9,37 +11,55 @@ class Widget extends Component {
     good: 0,
     neutral: 0,
     bad: 0,
+    total: 0,
+    feedback: 0,
   };
 
   clickButtonHandler = (e) => {
     const key = e.target.textContent.toLowerCase();
-
     if (key in this.state) {
-      this.setState((prevState) => {
-        return { [key]: prevState[key] + 1 };
-      });
+      this.setState(
+        (prevState) => {
+          return {
+            [key]: prevState[key] + 1,
+          };
+        },
+        () => {
+          const { good, neutral, bad } = this.state;
+          const total = good + neutral + bad;
+          const feedback = Math.round((good * 100) / total);
+          this.setState({ total, feedback });
+        }
+      );
     }
   };
 
   render() {
-    const { good, neutral, bad } = this.state;
-
-    const buttons = Object.keys(this.state).map((key, id) => {
-      return <Button title={key} key={id} />;
-    });
+    const { good, neutral, bad, total, feedback } = this.state;
 
     return (
       <div className={classes.widget}>
-        <h2> PLease leave feedback</h2>
-        <div className={classes.btns} onClick={this.clickButtonHandler}>
-          {buttons}
-        </div>
-        <h2>Statistics</h2>
-        <div className={classes.statistics}>
-          <Label message="Good" total={good} />
-          <Label message="Neutral" total={neutral} />
-          <Label message="Bad" total={bad} />
-        </div>
+        <Section
+          title={"please leave feedback"}
+          onClickHandler={this.clickButtonHandler}
+          className={classes.btns}
+        >
+          <FeedbackOptions />
+        </Section>
+
+        <Section
+          title={"Statistics"}
+          onClickHandler={this.clickButtonHandler}
+          className={classes.statistics}
+        >
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={feedback}
+          />
+        </Section>
       </div>
     );
   }
