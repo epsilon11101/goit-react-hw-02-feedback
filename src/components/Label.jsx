@@ -8,7 +8,7 @@ class Label extends Component {
 
     return (
       <p className={classes.title}>
-        {message}: {total}
+        {message}: {total} {message.includes("feedback") ? "%" : ""}
       </p>
     );
   }
